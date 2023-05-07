@@ -33,16 +33,17 @@ def num_magic_square(matrix):
 
 
 def call_check_num():
-    # These are magic square
+    # Testing for some of the magic square inputs
     matrix = [[8, 1, 6],[3, 5, 7],[4, 9, 2]]
     output = num_magic_square(matrix)
     print("The output is: ",output)
     matrix = [ [16, 2, 3, 13],[5, 11, 10, 8],[9, 7, 6, 12],[4, 14, 15, 1] ]
     output = num_magic_square(matrix)
-    print(output)
+    print("The output is: ",output)
     matrix = [ [35, 1, 6, 26, 19, 24],[3, 32, 7, 21, 23, 25],[31, 9, 2, 22, 27, 20],[8, 28, 33, 17, 10, 15],[30, 5, 34, 12, 14, 16],[4, 36, 29, 13, 18, 11] ]
     output = num_magic_square(matrix)
-    print(output)
+    print("The output is: ",output)
+
 
 call_check_num()
 
