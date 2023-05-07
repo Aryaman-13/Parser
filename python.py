@@ -43,6 +43,17 @@ def call_check_num():
     matrix = [ [35, 1, 6, 26, 19, 24],[3, 32, 7, 21, 23, 25],[31, 9, 2, 22, 27, 20],[8, 28, 33, 17, 10, 15],[30, 5, 34, 12, 14, 16],[4, 36, 29, 13, 18, 11] ]
     output = num_magic_square(matrix)
     print("The output is: ",output)
+    print("*************** BREAK ******************")
+    # Testing for some of the non-magic square inputs
+    matrix = [ [1, 2, 3],[4, 5, 6],[7, 8, 9] ]
+    output = num_magic_square(matrix)
+    print("The output is: ",output)
+    matrix = [ [1, 2, 3, 4],[5, 6, 7, 8],[9, 10, 11, 12],[13, 14, 15, 16] ]
+    output = num_magic_square(matrix)
+    print("The output is: ",output)
+    matrix = [ [1, 2, 3, 4, 5],[6, 7, 8, 9, 10],[11, 12, 13, 14, 15],[16, 17, 18, 19, 20],[21, 22, 23, 24, 25] ]
+    output = num_magic_square(matrix)
+    print("The output is: ",output)
 
 
 call_check_num()
