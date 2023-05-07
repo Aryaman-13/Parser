@@ -44,6 +44,8 @@ def call_check_num():
     output = num_magic_square(matrix)
     print(output)
 
+call_check_num()
+
 
 
 
