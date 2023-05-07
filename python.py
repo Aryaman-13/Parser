@@ -31,6 +31,7 @@ def num_magic_square(matrix):
     # If all checks pass, the matrix is a magic square
     return True
 
+# In this function, we check whether the given matrix is magic square when all the inputs of the matrix is number
 
 def call_check_num():
     # Testing for some of the magic square inputs
@@ -55,8 +56,18 @@ def call_check_num():
     output = num_magic_square(matrix)
     print("The output is: ",output)
 
+# In this function, we check whether the given matrix is magic square when the inputs are an expression
+
+def expression_magic_square():
+    print(" In this case we take certain assumptions")
+    # Handling the case in which the user gives in the format : (x^2+2xy+3y^2)
+    
+
+
 
 call_check_num()
+expression_magic_square()
+
 
 
 
