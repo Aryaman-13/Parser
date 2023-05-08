@@ -1,72 +1,299 @@
 # In this code we will be implementing the magic matrix problem in python
 
+
+import re
+from collections import defaultdict
+
+# Adds '1' in the beginning if the coefficient is missing for that term 
+
+def add_dig_start(word):
+
+    if(word[0] == '-'):
+        if(word[1].isdigit() == True):
+            return word # It already has a coefficient
+        else:
+            word = "1" + word # Adding "1" as the leading coefficient
+            return word
+    else:
+        if(word[0].isdigit() == True):
+            return word # It already has a coefficient
+        else:
+            word = "1" + word # Adding "1" as the leading coefficient
+            return word
+        
+# This function parses the string until it gets the alphabet | Output ---> length of the substring and substring
+    
+def parse_string_until_alphabet(string):
+    for i in range(len(string)):
+        if string[i].isalpha():
+            return i, string[:i]
+    return len(string), string
+
+# This function stores the sign of each term. This is calld while assigning the sign to the coefficients
+
+def assign_sign(word):
+    sign_list = []
+    current_sign = '+'
+    if word[0] == '-':
+        current_sign = '-'
+    if word[0].isdigit() == True:
+        sign_list.append(current_sign)
+        
+    for char in word:
+        if char in ['+','-']:
+            current_sign = char
+            sign_list.append(current_sign)
+    return sign_list
+
+# This function is used to simplify the terms containing variables | Concatenates the variable with its power
+
+def simplify_expression(char_list):
+    j = 0 
+    total_list = []
+    while(j<len(char_list)):
+       if(char_list[j].isalpha()==True):
+           if(j+1<len(char_list) and char_list[j+1].isdigit()==True):
+               output = char_list[j]+char_list[j+1]
+               total_list.append(output)
+               j+=1
+           else:
+               total_list.append(char_list[j])
+               j+=1
+       else:
+           j+=1
+    return total_list
+
+# This function splits the each term
+
+def split_expression(word):
+    if word[0].isdigit() == False:
+        word = "1"+word
+    # Now we will start iterating through the word
+    index, coeff = parse_string_until_alphabet(word)
+    text = word[index:]
+    i = 0
+    list_char = []
+    while(i<len(text)):
+        list_char.append(text[i])
+        # Now checking whether the next character is an alphabet or '^'
+        if (i+1<len(text) and text[i+1]=='^'):
+            j = i+2
+            remaining_word = text[j:]
+            parsed_string = ""
+            for character in remaining_word:
+                if character.isalpha():
+                    break
+                else:
+                    parsed_string+= character
+                    j+=1
+            i = j
+            list_char.append(parsed_string)
+        else:
+            i+=1
+
+    output = simplify_expression(list_char)
+    output.insert(0,coeff)
+    return output
+
+# This function is used to create dictionary of the resultant expression. Keys are all the unique terms that appear in the expression, and the value 
+#  of the keys are the coefficients of the terms
+
+def create_dictionary(lst):
+    dict1 = defaultdict(int)
+    for elem in lst:
+        if (len(elem)==1): # It is a constant
+          dict1['constant'] = elem[0]
+        else:
+            var = ""
+            value = elem[0]
+            for j in range(len(elem)):
+              if(j>0):
+                 var = var + elem[j]
+            dict1[var] = value
+    return dict1
+
+# Takes sum of two expressions
+
+def perform_operations(dict1,dict2):
+
+    master_dict = {}
+
+    # Iterate over dict1 and check if the keys exist in dict2
+    for key, val in dict1.items():
+        if key in dict2:
+            value = dict2[key]
+            if (type(value)==str):
+                if value[0] == '+':
+                    value = int(value[1:])
+                else:
+                    value = int(value[1:])
+                    value = - (value)
+            if (type(val)== str):
+                if val[0] == '+':
+                    val = int(val[1:])
+                else:
+                    val = int(val[1:])
+                    val = -(val)
+            master_dict[key] = val + value
+            
+
+    # Iterate over dict2 and add the keys that are not present in dict1
+    for key, val in dict2.items():
+        if key not in dict1:
+            master_dict[key] = val
+
+    # Iterate over dict1 and add the keys that are not present in master_dict
+    for key, val in dict1.items():
+        if key not in master_dict:
+            master_dict[key] = val
+    
+    return master_dict
+
+
+# Calls all the functions that are defined above
+
+def call_function(text):
+    sign_list = assign_sign(text)
+    # Splits the string whenever it encounters a (+) or (-) sign, without including the sign in the split
+    result = re.split('(?<![eE])[+-]', text)
+    # Removes any leading or trailing whitespace from each term
+    result = [term.strip() for term in result]
+    if result[0] == '': 
+        result = result[1:]
+
+    for i in range(len(result)):
+        word = result[i]
+        output = add_dig_start(word)
+        result[i] = output
+        if any(c.isalpha() for c in result[i]):
+            result[i] = split_expression(result[i])
+        else:
+            result[i] = [result[i]]
+
+    # Adding the respective signs to each term
+
+    for i in range(len(result)):
+        expression = result[i]
+        expression[0] = sign_list[i] + expression[0]
+
+    return result
+
+def row_operations(term):
+    result = call_function(term)
+    dict1 = create_dictionary(result)
+    return dict1
+
+# Performs operations for a row. Here the variable row can be a single row, column, left diagonal, right diagonal
+
+def calculate_row(row):
+    resultant_dict = defaultdict(int)
+    for i in range(len(row)-1):
+        if i == 0:
+            dict1 = row_operations(row[i])
+            dict2 = row_operations(row[i+1])
+            resultant_dict = perform_operations(dict1,dict2)
+        else:
+            dict1 = row_operations(row[i+1])
+            resultant_dict = perform_operations(resultant_dict,dict1)
+    return resultant_dict
+
+
+
+def is_magic_square(matrix):
+    # Checks for all the rows
+    master_dict = defaultdict(int)
+    for i in range(len(matrix)):
+        if i == 0:
+            master_dict = calculate_row(matrix[i])
+        else:
+            check_dict = calculate_row(matrix[i])
+            if (master_dict!=check_dict):
+                return False
+
+    # Checks for all the columns
+    num_cols = len(matrix[0])
+    for col_idx in range(num_cols):
+        # if col_idx == 0:
+        #     column = [matrix[row_idx][0] for row_idx in range(len(matrix))]
+        #     master_dict = calculate_row(column)
+        # else:
+            column = [matrix[row_idx][col_idx] for row_idx in range(len(matrix))]
+            check_dict = calculate_row(column)
+            if (master_dict!=check_dict):
+                return False
+    check_dict.clear()
+    # Checks for the left diagonal
+    left_diag = [matrix[i][i] for i in range(len(matrix))]
+    check_dict = calculate_row(left_diag)
+    if (master_dict!=check_dict):
+                return False
+    check_dict.clear()
+    # Checks for the right diagonal
+    size = len(matrix)
+    right_diag = [matrix[i][-1-i] for i in range(size)]
+    check_dict = calculate_row(left_diag)
+    if (master_dict!=check_dict):
+                return False
+    return True
+
+
+########################################### ALL THE FUNCTIONS  END HERE FOR EXPRESSIONS ####################################################
+
 def num_magic_square(matrix):
+    print("hi")
     # Get the size of the matrix
     n = len(matrix)
-    
     # Calculate the magic constant
     magic_constant = n * (n**2 + 1) // 2
-    
     # Check each row
     for row in matrix:
         if sum(row) != magic_constant:
             return False
-    
-    # Check each column
+    # CheckS for each column
     for j in range(n):
         col_sum = sum(matrix[i][j] for i in range(n))
         if col_sum != magic_constant:
             return False
-    
-    # Check the main diagonal
+    # Checks the left diagonal
     diag_sum = sum(matrix[i][i] for i in range(n))
     if diag_sum != magic_constant:
         return False
-    
     # Check the other diagonal
     diag_sum = sum(matrix[i][n-1-i] for i in range(n))
     if diag_sum != magic_constant:
         return False
-    
     # If all checks pass, the matrix is a magic square
     return True
 
-# In this function, we check whether the given matrix is magic square when all the inputs of the matrix is number
+def main():
 
-def call_check_num():
-    # Testing for some of the magic square inputs
-    matrix = [[8, 1, 6],[3, 5, 7],[4, 9, 2]]
-    output = num_magic_square(matrix)
-    print("The output is: ",output)
-    matrix = [ [16, 2, 3, 13],[5, 11, 10, 8],[9, 7, 6, 12],[4, 14, 15, 1] ]
-    output = num_magic_square(matrix)
-    print("The output is: ",output)
-    matrix = [ [35, 1, 6, 26, 19, 24],[3, 32, 7, 21, 23, 25],[31, 9, 2, 22, 27, 20],[8, 28, 33, 17, 10, 15],[30, 5, 34, 12, 14, 16],[4, 36, 29, 13, 18, 11] ]
-    output = num_magic_square(matrix)
-    print("The output is: ",output)
-    print("*************** BREAK ******************")
-    # Testing for some of the non-magic square inputs
-    matrix = [ [1, 2, 3],[4, 5, 6],[7, 8, 9] ]
-    output = num_magic_square(matrix)
-    print("The output is: ",output)
-    matrix = [ [1, 2, 3, 4],[5, 6, 7, 8],[9, 10, 11, 12],[13, 14, 15, 16] ]
-    output = num_magic_square(matrix)
-    print("The output is: ",output)
-    matrix = [ [1, 2, 3, 4, 5],[6, 7, 8, 9, 10],[11, 12, 13, 14, 15],[16, 17, 18, 19, 20],[21, 22, 23, 24, 25] ]
-    output = num_magic_square(matrix)
-    print("The output is: ",output)
+    choice = input("Enter your choice:")
+    if (choice == 0):
+        # Testing for some of the magic square inputs which are entirely number
+        matrix = [[8, 1, 6],[3, 5, 7],[4, 9, 2]]
+        output = num_magic_square(matrix)
+        print("hi1")
+        print("The output is: ",output)
+        matrix = [ [16, 2, 3, 13],[5, 11, 10, 8],[9, 7, 6, 12],[4, 14, 15, 1] ]
+        output = num_magic_square(matrix)
+        print("hi2")
+        print("The output is: ",output)
+        matrix = [ [1, 2, 3],[4, 5, 6],[7, 8, 9] ]
+        output = num_magic_square(matrix)
+        print("The output is: ",output)
+    else:
+        matrix = [["8", "1", "6"],["3", "5", "7"],["4", "9", "2"]]
+        print(is_magic_square(matrix))
+    return 0
 
-# In this function, we check whether the given matrix is magic square when the inputs are an expression
-
-def expression_magic_square():
-    print(" In this case we take certain assumptions")
-    # Handling the case in which the user gives in the format : (x^2+2xy+3y^2)
+    
+if __name__== "__main__" :
+    main()
     
 
 
 
-call_check_num()
-expression_magic_square()
+
 
 
 
