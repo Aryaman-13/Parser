@@ -284,7 +284,7 @@ def main():
         matrix = [ ["16", "2", "3", "13"],["5", "11", "10", "8"],["9", "7", "6", "12"],["4", "14", "15", "1"] ]
         print("The output is: ",is_magic_square(matrix))
         matrix = [ ["1", "2", "3"],["4", "5", "6"],["7", "8", "9"]]
-        output = num_magic_square(matrix)
+        output = is_magic_square(matrix)
         print("The output is: ",output)
     return 0
 
