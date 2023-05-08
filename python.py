@@ -240,7 +240,6 @@ def is_magic_square(matrix):
 ########################################### ALL THE FUNCTIONS  END HERE FOR EXPRESSIONS ####################################################
 
 def num_magic_square(matrix):
-    print("hi")
     # Get the size of the matrix
     n = len(matrix)
     # Calculate the magic constant
@@ -267,23 +266,21 @@ def num_magic_square(matrix):
 
 def main():
 
-    choice = input("Enter your choice:")
+    choice = int(input("Enter your choice:"))
     if (choice == 0):
         # Testing for some of the magic square inputs which are entirely number
         matrix = [[8, 1, 6],[3, 5, 7],[4, 9, 2]]
         output = num_magic_square(matrix)
-        print("hi1")
         print("The output is: ",output)
         matrix = [ [16, 2, 3, 13],[5, 11, 10, 8],[9, 7, 6, 12],[4, 14, 15, 1] ]
         output = num_magic_square(matrix)
-        print("hi2")
         print("The output is: ",output)
         matrix = [ [1, 2, 3],[4, 5, 6],[7, 8, 9] ]
         output = num_magic_square(matrix)
         print("The output is: ",output)
     else:
         matrix = [["8", "1", "6"],["3", "5", "7"],["4", "9", "2"]]
-        print(is_magic_square(matrix))
+        print("The output is: ",is_magic_square(matrix))
     return 0
 
     
