@@ -237,7 +237,7 @@ def is_magic_square(matrix):
     return True
 
 
-########################################### ALL THE FUNCTIONS  END HERE FOR EXPRESSIONS ####################################################
+########################################### ALL THE FUNCTIONS FOR EXPRESSIONS END HERE ####################################################
 
 def num_magic_square(matrix):
     # Get the size of the matrix
@@ -291,15 +291,3 @@ def main():
     
 if __name__== "__main__" :
     main()
-    
-
-
-
-
-
-
-
-
-
-
-
