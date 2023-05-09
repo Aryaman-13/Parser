@@ -36,7 +36,7 @@ def assign_sign(word):
     current_sign = '+'
     if word[0] == '-':
         current_sign = '-'
-    if word[0].isdigit() == True:
+    if word[0].isdigit() == True or word[0].isalpha():
         sign_list.append(current_sign)
         
     for char in word:
@@ -171,11 +171,9 @@ def call_function(text):
             result[i] = [result[i]]
 
     # Adding the respective signs to each term
-
     for i in range(len(result)):
         expression = result[i]
         expression[0] = sign_list[i] + expression[0]
-
     return result
 
 def row_operations(term):
@@ -286,7 +284,13 @@ def main():
         matrix = [ ["1", "2", "3"],["4", "5", "6"],["7", "8", "9"]]
         output = is_magic_square(matrix)
         print("The output is: ",output)
+        matrix = ["x^2+2","x^2+5x+7","x^2+4x+6"], ['x^2+7x+9','x^2+3x+5','x^2-x+1'] , ['x^2+2x+4','x^2+x+3','x^2+6x+8']
+        output = is_magic_square(matrix)
+        print("The output is: ",output)
+
     return 0
+
+
 
     
 if __name__== "__main__" :
