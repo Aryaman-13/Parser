@@ -195,8 +195,6 @@ def calculate_row(row):
             resultant_dict = perform_operations(resultant_dict,dict1)
     return resultant_dict
 
-
-
 def is_magic_square(matrix):
     # Checks for all the rows
     master_dict = defaultdict(int)
@@ -264,6 +262,28 @@ def num_magic_square(matrix):
 
 def main():
 
+    print("This code assumes certain assumptions for the case of SIMPLE EXPRESSIONS OR POLYNOMIALS, and expects that the user gives input aligned to those assumptions")
+    print()
+    print("ASSUMPTION 1: ")
+    print("If you want to raise a variable to its power use ('^') operator")
+    print("Some Examples are:")
+    print(" 2nd degree of x is represented as x^2")
+    print("9th degree of y is represented as y^9")
+    print("n degree of z is represented as z^n")
+    print("1 degree of var is represented only by var. We do not use ('^') for this case")
+    print()
+    print("ASSUMPTION 2: ")
+    print("Do not use any multiplicative operator ('*').")
+    print("Some Examples are:")
+    print(" Represent 2*x as 2x ")
+    print(" Represent 7*x^2 as 7x^2")
+    # Please add the fact only one term can exist
+    print()
+    print()
+    print("Enter the value of choice to be 0, if you want to check magic square matrix for only numbers")
+    print("Enter the value of choice to be 1, if you want to check magic square matrix for polynomials and simple expressions")
+    print()
+
     choice = int(input("Enter your choice:"))
     if (choice == 0):
         # Testing for some of the magic square inputs which are entirely number
@@ -289,8 +309,6 @@ def main():
         print("The output is: ",output)
 
     return 0
-
-
 
     
 if __name__== "__main__" :
