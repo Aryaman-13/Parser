@@ -1,6 +1,5 @@
 # In this code we will be implementing the magic matrix problem in python
 
-
 import re
 from collections import defaultdict
 
@@ -98,6 +97,39 @@ def split_expression(word):
 # This function is used to create dictionary of the resultant expression. Keys are all the unique terms that appear in the expression, and the value 
 #  of the keys are the coefficients of the terms
 
+
+def convert_string(string):
+    result = ''
+    i = 0
+
+    while i < len(string):
+        if string[i].isalpha():
+            result += string[i]
+            i += 1
+        else:
+            num_start = i
+            while i < len(string)  and string[i].isdigit():
+                i += 1
+            num = int(string[num_start:i])
+            num = num - 1
+            result += string[num_start - 1] * num
+
+    return result
+
+def update_dict(dict1):
+    new_dict = {}
+    for index in dict1:
+        var = convert_string(index)
+        var = ''.join(sorted(var))
+        if var not in new_dict:
+            new_dict[var] = dict1[index]
+        else: # It is already present
+            new_dict[var] = int(new_dict[var]) + int(dict1[index])
+    return new_dict
+
+# This function is used to create dictionary of the resultant expression. Keys are all the unique terms that appear in the expression, and the value 
+#  of the keys are the coefficients of the terms
+
 def create_dictionary(lst):
     dict1 = {}
     for elem in lst: # Extracts each element of the list
@@ -113,17 +145,19 @@ def create_dictionary(lst):
             for j in range(len(elem)):
                 if(j>0):
                     var = var + elem[j]
-            if var not in dict1:
+            if var not in dict1: # If that term does not exist in the dictionary
                 dict1[var] = [value]
             else:
-                dict1[var].append(value)
-    for index in dict1:
+                dict1[var].append(value) # If that term already exists in the dictionary
+    # For terms which appear more than once in the expression, computing the resultant sum of them
+    for index in dict1: 
         if len(dict1[index])==1:
             dict1[index] = (dict1[index])[0]
         else:
             sum = 0
             for value in dict1[index]:sum = sum + int(value)
             dict1[index] = sum
+    dict1 = update_dict(dict1)
     return dict1
 
 # Takes sum of two expressions
@@ -162,7 +196,6 @@ def perform_operations(dict1,dict2):
             master_dict[key] = val
     
     return master_dict
-
 
 # Calls all the functions that are defined above
 
@@ -249,31 +282,6 @@ def is_magic_square(matrix):
 
 ########################################### ALL THE FUNCTIONS FOR EXPRESSIONS END HERE ####################################################
 
-def num_magic_square(matrix):
-    # Get the size of the matrix
-    n = len(matrix)
-    # Calculate the magic constant
-    magic_constant = n * (n**2 + 1) // 2
-    # Check each row
-    for row in matrix:
-        if sum(row) != magic_constant:
-            return False
-    # CheckS for each column
-    for j in range(n):
-        col_sum = sum(matrix[i][j] for i in range(n))
-        if col_sum != magic_constant:
-            return False
-    # Checks the left diagonal
-    diag_sum = sum(matrix[i][i] for i in range(n))
-    if diag_sum != magic_constant:
-        return False
-    # Check the other diagonal
-    diag_sum = sum(matrix[i][n-1-i] for i in range(n))
-    if diag_sum != magic_constant:
-        return False
-    # If all checks pass, the matrix is a magic square
-    return True
-
 def main():
 
     print("This code assumes certain assumptions for the case of SIMPLE EXPRESSIONS OR POLYNOMIALS, and expects that the user gives input aligned to those assumptions")
@@ -291,37 +299,18 @@ def main():
     print("Some Examples are:")
     print(" Represent 2*x as 2x ")
     print(" Represent 7*x^2 as 7x^2")
-    # Please add the fact only one term can exist
     print()
     print()
-    print("Enter the value of choice to be 0, if you want to check magic square matrix for only numbers")
-    print("Enter the value of choice to be 1, if you want to check magic square matrix for polynomials and simple expressions")
-    print()
-
-    choice = int(input("Enter your choice:"))
-    if (choice == 0):
-        # Testing for some of the magic square inputs which are entirely number
-        matrix = [[8, 1, 6],[3, 5, 7],[4, 9, 2]]
-        output = num_magic_square(matrix)
-        print("The output is: ",output)
-        matrix = [ [16, 2, 3, 13],[5, 11, 10, 8],[9, 7, 6, 12],[4, 14, 15, 1] ]
-        output = num_magic_square(matrix)
-        print("The output is: ",output)
-        matrix = [ [1, 2, 3],[4, 5, 6],[7, 8, 9] ]
-        output = num_magic_square(matrix)
-        print("The output is: ",output)
-    else:
-        matrix = [["8", "1", "6"],["3", "5", "7"],["4", "9", "2"]]
-        print("The output is: ",is_magic_square(matrix))
-        matrix = [ ["16", "2", "3", "13"],["5", "11", "10", "8"],["9", "7", "6", "12"],["4", "14", "15", "1"] ]
-        print("The output is: ",is_magic_square(matrix))
-        matrix = [ ["1", "2", "3"],["4", "5", "6"],["7", "8", "9"]]
-        output = is_magic_square(matrix)
-        print("The output is: ",output)
-        matrix = [["x^2+2","x^2+5x+7","x^2+4x+6"], ['x^2+7x+9','x^2+3x+5','x^2-x+1'] , ['x^2+2x+4','x^2+x+3','x^2+6x+8']]
-        output = is_magic_square(matrix)
-        print("The output is: ",output)
-
+    matrix = [["8", "1", "6"],["3", "5", "7"],["4", "9", "2"]]
+    print("The output is: ",is_magic_square(matrix))
+    matrix = [ ["16", "2", "3", "13"],["5", "11", "10", "8"],["9", "7", "6", "12"],["4", "14", "15", "1"] ]
+    print("The output is: ",is_magic_square(matrix))
+    matrix = [ ["1", "2", "3"],["4", "5", "6"],["7", "8", "9"]]
+    output = is_magic_square(matrix)
+    print("The output is: ",output)
+    matrix = [["x^2+2","x^2+5x+7","x^2+4x+6"], ['x^2+7x+9','x^2+3x+5','x^2-x+1'] , ['x^2+2x+4','x^2+x+3','x^2+6x+8']]
+    output = is_magic_square(matrix)
+    print("The output is: ",output)
     return 0
 
     
