@@ -99,17 +99,31 @@ def split_expression(word):
 #  of the keys are the coefficients of the terms
 
 def create_dictionary(lst):
-    dict1 = defaultdict(int)
-    for elem in lst:
-        if (len(elem)==1): # It is a constant
-          dict1['constant'] = elem[0]
-        else:
+    dict1 = {}
+    for elem in lst: # Extracts each element of the list
+        if(len(elem) == 1): # This means that it is a constant
+            var = 'constant' # Defining the variable as constant
+            if var not in dict1: # No constant term in the dictionary
+                dict1[var] = [elem[0]]
+            else: # There exists a constant term already
+                dict1['constant'].append(elem[0])
+        else: # Any term except constant
             var = ""
             value = elem[0]
             for j in range(len(elem)):
-              if(j>0):
-                 var = var + elem[j]
-            dict1[var] = value
+                if(j>0):
+                    var = var + elem[j]
+            if var not in dict1:
+                dict1[var] = [value]
+            else:
+                dict1[var].append(value)
+    for index in dict1:
+        if len(dict1[index])==1:
+            dict1[index] = (dict1[index])[0]
+        else:
+            sum = 0
+            for value in dict1[index]:sum = sum + int(value)
+            dict1[index] = sum
     return dict1
 
 # Takes sum of two expressions
@@ -304,7 +318,7 @@ def main():
         matrix = [ ["1", "2", "3"],["4", "5", "6"],["7", "8", "9"]]
         output = is_magic_square(matrix)
         print("The output is: ",output)
-        matrix = ["x^2+2","x^2+5x+7","x^2+4x+6"], ['x^2+7x+9','x^2+3x+5','x^2-x+1'] , ['x^2+2x+4','x^2+x+3','x^2+6x+8']
+        matrix = [["x^2+2","x^2+5x+7","x^2+4x+6"], ['x^2+7x+9','x^2+3x+5','x^2-x+1'] , ['x^2+2x+4','x^2+x+3','x^2+6x+8']]
         output = is_magic_square(matrix)
         print("The output is: ",output)
 
