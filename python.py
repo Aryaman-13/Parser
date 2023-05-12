@@ -113,7 +113,6 @@ def convert_string(string):
             num = int(string[num_start:i])
             num = num - 1
             result += string[num_start - 1] * num
-
     return result
 
 def update_dict(dict1):
@@ -159,6 +158,7 @@ def create_dictionary(lst):
             dict1[index] = sum
     dic_out = {}
     dict1 = update_dict(dict1)
+    print(dict1)
     for x, y in dict1.items():
         if y != 0:
             dic_out[x] = y
