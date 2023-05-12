@@ -316,4 +316,3 @@ function main()
     println("Enter the value of choice to be 0, if if you want to check magic square matrix for only numbers")
     println("Enter the value of choice to be 1, if you want to check magic square matrix for polynomials and simple expressions")
     println()
-
