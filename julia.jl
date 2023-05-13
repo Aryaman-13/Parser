@@ -158,7 +158,6 @@ function update_dict(dict1)
     return new_dict
 end
 
-
 function create_dictionary(lst)
     dict1 = Dict{String, Any}()
     for elem in lst
