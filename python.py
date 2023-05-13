@@ -1,10 +1,7 @@
 # In this code we will be implementing the magic matrix problem in python
-
 import re
 from collections import defaultdict
-
 # Adds '1' in the beginning if the coefficient is missing for that term 
-
 def add_dig_start(word):
 
     if(word[0] == '-'):
@@ -18,18 +15,14 @@ def add_dig_start(word):
             return word # It already has a coefficient
         else:
             word = "1" + word # Adding "1" as the leading coefficient
-            return word
-        
+            return word 
 # This function parses the string until it gets the alphabet | Output ---> length of the substring and substring
-    
 def parse_string_until_alphabet(string):
     for i in range(len(string)):
         if string[i].isalpha():
             return i, string[:i]
     return len(string), string
-
 # This function stores the sign of each term. This is calld while assigning the sign to the coefficients
-
 def assign_sign(word):
     sign_list = []
     current_sign = '+'
@@ -43,9 +36,7 @@ def assign_sign(word):
             current_sign = char
             sign_list.append(current_sign)
     return sign_list
-
 # This function is used to simplify the terms containing variables | Concatenates the variable with its power
-
 def simplify_expression(char_list):
     j = 0 
     total_list = []
@@ -61,9 +52,7 @@ def simplify_expression(char_list):
        else:
            j+=1
     return total_list
-
 # This function splits the each term
-
 def split_expression(word):
     if word[0].isdigit() == False:
         word = "1"+word
@@ -96,8 +85,6 @@ def split_expression(word):
 
 # This function is used to create dictionary of the resultant expression. Keys are all the unique terms that appear in the expression, and the value 
 #  of the keys are the coefficients of the terms
-
-
 def convert_string(string):
     result = ''
     i = 0
@@ -114,12 +101,12 @@ def convert_string(string):
             num = num - 1
             result += string[num_start - 1] * num
     return result
-
 def update_dict(dict1):
     new_dict = {}
     for index in dict1:
         var = convert_string(index)
         var = ''.join(sorted(var))
+        if index == 'constant': var = 'constant'
         if var not in new_dict:
             new_dict[var] = dict1[index]
         else: # It is already present
@@ -128,7 +115,6 @@ def update_dict(dict1):
 
 # This function is used to create dictionary of the resultant expression. Keys are all the unique terms that appear in the expression, and the value 
 #  of the keys are the coefficients of the terms
-
 def create_dictionary(lst):
     dict1 = {}
     for elem in lst: # Extracts each element of the list
@@ -165,11 +151,8 @@ def create_dictionary(lst):
     return dic_out
 
 # Takes sum of two expressions
-
 def perform_operations(dict1,dict2):
-
     master_dict = {}
-
     # Iterate over dict1 and check if the keys exist in dict2
     for key, val in dict1.items():
         if key in dict2:
@@ -187,22 +170,16 @@ def perform_operations(dict1,dict2):
                     val = int(val[1:])
                     val = -(val)
             master_dict[key] = val + value
-            
-
     # Iterate over dict2 and add the keys that are not present in dict1
     for key, val in dict2.items():
         if key not in dict1:
             master_dict[key] = val
-
     # Iterate over dict1 and add the keys that are not present in master_dict
     for key, val in dict1.items():
         if key not in master_dict:
             master_dict[key] = val
-    
     return master_dict
-
 # Calls all the functions that are defined above
-
 def call_function(text):
     sign_list = assign_sign(text)
     # Splits the string whenever it encounters a (+) or (-) sign, without including the sign in the split
@@ -211,7 +188,6 @@ def call_function(text):
     result = [term.strip() for term in result]
     if result[0] == '': 
         result = result[1:]
-
     for i in range(len(result)):
         word = result[i]
         output = add_dig_start(word)
@@ -226,12 +202,10 @@ def call_function(text):
         expression = result[i]
         expression[0] = sign_list[i] + expression[0]
     return result
-
 def row_operations(term):
     result = call_function(term)
     dict1 = create_dictionary(result)
     return dict1
-
 # Performs operations for a row. Here the variable row can be a single row, column, left diagonal, right diagonal
 
 def calculate_row(row):
@@ -245,7 +219,6 @@ def calculate_row(row):
             dict1 = row_operations(row[i+1])
             resultant_dict = perform_operations(resultant_dict,dict1)
     return resultant_dict
-
 def is_magic_square(matrix):
     # Checks for all the rows
     master_dict = defaultdict(int)
@@ -256,7 +229,6 @@ def is_magic_square(matrix):
             check_dict = calculate_row(matrix[i])
             if (master_dict!=check_dict):
                 return False
-
     # Checks for all the columns
     num_cols = len(matrix[0])
     for col_idx in range(num_cols):
@@ -282,7 +254,6 @@ def is_magic_square(matrix):
     if (master_dict!=check_dict):
                 return False
     return True
-
 ########################################### ALL THE FUNCTIONS FOR EXPRESSIONS END HERE ####################################################
 
 def main():
@@ -318,6 +289,13 @@ def main():
     matrix = [["y^2x+xy-1+xz-xz","yx+1-2+xy^2"],["xy+y^2x-1" ,'yx-1+z^2+xy^2-z^2']]
     output = is_magic_square(matrix)
     print("The output is: ",output)
+
+    print()
+    print()
+    row = ["3x^3y^2+3","y^3x^2+2","3"]
+    print(calculate_row(row))
+
+    
     return 0
 
 if __name__== "__main__" :
