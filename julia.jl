@@ -326,7 +326,15 @@ println("The output is: ",output)
 matrix = [["y^2x+xy-1+xz-xz","yx+1-2+xy^2"],["xy+y^2x-1" ,"yx-1+z^2+xy^2-z^2"]]
 output = is_magic_square(matrix)
 println("The output is: ",output)
-
+matrix = [["-x^2y^2+2xy+1" ,"-x^2y^2+7yx-5yx+1"],["2x^2y^2-3x^2y^2+2xy+1","2xy-y^2x^2+1"]]
+output = is_magic_square(matrix)
+println("The output is: ",output)
+matrix = [["-x^2y^2 + 2xy + 1","-x^2y^2 + 7yx - 5yx + 1"],["2x^2y^2 - 3x^2y^2 + 2xy + 1", "2xy - y^2x^2 + 1"]]
+output = is_magic_square(matrix)
+println("The output is: ",output)
+matrix = [["1+1", "1+1"],["1+1", "1+1"]]
+output = is_magic_square(matrix)
+println("The output is: ",output)
 
 
 

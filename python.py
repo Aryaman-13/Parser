@@ -144,7 +144,6 @@ def create_dictionary(lst):
             dict1[index] = sum
     dic_out = {}
     dict1 = update_dict(dict1)
-    print(dict1)
     for x, y in dict1.items():
         if y != 0:
             dic_out[x] = y
@@ -285,17 +284,19 @@ def main():
     matrix = [["x^2+2","x^2+5x+7","x^2+4x+6"], ['x^2+7x+9','x^2+3x+5','x^2-x+1'] , ['x^2+2x+4','x^2+x+3','x^2+6x+8']]
     output = is_magic_square(matrix)
     print("The output is: ",output)
-    print("yo")
     matrix = [["y^2x+xy-1+xz-xz","yx+1-2+xy^2"],["xy+y^2x-1" ,'yx-1+z^2+xy^2-z^2']]
     output = is_magic_square(matrix)
     print("The output is: ",output)
+    matrix = [["-x^2y^2+2xy+1" ,"-x^2y^2+7yx-5yx+1"],["2x^2y^2-3x^2y^2+2xy+1","2xy-y^2x^2+1"]]
+    output = is_magic_square(matrix)
+    print("The output is: ",output)
+    matrix = [['-x^2y^2 + 2xy + 1','-x^2y^2 + 7yx - 5yx + 1'],['2x^2y^2 - 3x^2y^2 + 2xy + 1', '2xy - y^2x^2 + 1']]
+    output = is_magic_square(matrix)
+    print("The output is: ",output)
+    matrix = [['1+1', '1+1'], ['1+1', '1+1']]
+    output = is_magic_square(matrix)
+    print("The output is: ",output)
 
-    print()
-    print()
-    row = ["3x^3y^2+3","y^3x^2+2","3"]
-    print(calculate_row(row))
-
-    
     return 0
 
 if __name__== "__main__" :
