@@ -1,0 +1,2 @@
+y^2x+xy-1+xz-xz,yx+1-2+xy^2
+xy+y^2x-1,yx-1+z^2+xy^2-z^2

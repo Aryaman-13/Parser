@@ -78,7 +78,6 @@ def split_expression(word):
             list_char.append(parsed_string)
         else:
             i+=1
-
     output = simplify_expression(list_char)
     output.insert(0,coeff)
     return output
@@ -231,10 +230,6 @@ def is_magic_square(matrix):
     # Checks for all the columns
     num_cols = len(matrix[0])
     for col_idx in range(num_cols):
-        # if col_idx == 0:
-        #     column = [matrix[row_idx][0] for row_idx in range(len(matrix))]
-        #     master_dict = calculate_row(column)
-        # else:
             column = [matrix[row_idx][col_idx] for row_idx in range(len(matrix))]
             check_dict = calculate_row(column)
             if (master_dict!=check_dict):
@@ -253,6 +248,15 @@ def is_magic_square(matrix):
     if (master_dict!=check_dict):
                 return False
     return True
+
+def parse_text():
+    with open("./matrix.txt",'r') as file:
+        matrix = []
+        for line in file:
+            lst = line.rstrip().split(',')
+            lst = [value.lstrip() for value in lst]
+            matrix.append(lst)
+    return matrix
 ########################################### ALL THE FUNCTIONS FOR EXPRESSIONS END HERE ####################################################
 
 def main():
@@ -274,28 +278,37 @@ def main():
     print(" Represent 7*x^2 as 7x^2")
     print()
     print()
-    matrix = [["8", "1", "6"],["3", "5", "7"],["4", "9", "2"]]
-    print("The output is: ",is_magic_square(matrix))
-    matrix = [ ["16", "2", "3", "13"],["5", "11", "10", "8"],["9", "7", "6", "12"],["4", "14", "15", "1"] ]
-    print("The output is: ",is_magic_square(matrix))
-    matrix = [ ["1", "2", "3"],["4", "5", "6"],["7", "8", "9"]]
-    output = is_magic_square(matrix)
-    print("The output is: ",output)
-    matrix = [["x^2+2","x^2+5x+7","x^2+4x+6"], ['x^2+7x+9','x^2+3x+5','x^2-x+1'] , ['x^2+2x+4','x^2+x+3','x^2+6x+8']]
-    output = is_magic_square(matrix)
-    print("The output is: ",output)
-    matrix = [["y^2x+xy-1+xz-xz","yx+1-2+xy^2"],["xy+y^2x-1" ,'yx-1+z^2+xy^2-z^2']]
-    output = is_magic_square(matrix)
-    print("The output is: ",output)
-    matrix = [["-x^2y^2+2xy+1" ,"-x^2y^2+7yx-5yx+1"],["2x^2y^2-3x^2y^2+2xy+1","2xy-y^2x^2+1"]]
-    output = is_magic_square(matrix)
-    print("The output is: ",output)
-    matrix = [['-x^2y^2 + 2xy + 1','-x^2y^2 + 7yx - 5yx + 1'],['2x^2y^2 - 3x^2y^2 + 2xy + 1', '2xy - y^2x^2 + 1']]
-    output = is_magic_square(matrix)
-    print("The output is: ",output)
-    matrix = [['1+1', '1+1'], ['1+1', '1+1']]
-    output = is_magic_square(matrix)
-    print("The output is: ",output)
+
+    # print(is_magic_square(matrix))
+    # matrix = [["8", "1", "6"],["3", "5", "7"],["4", "9", "2"]]
+    # print("The output is: ",is_magic_square(matrix))
+    # matrix = [ ["16", "2", "3", "13"],["5", "11", "10", "8"],["9", "7", "6", "12"],["4", "14", "15", "1"] ]
+    # print("The output is: ",is_magic_square(matrix))
+    # matrix = [ ["1", "2", "3"],["4", "5", "6"],["7", "8", "9"]]
+    # output = is_magic_square(matrix)
+    # print("The output is: ",output)
+    # matrix = [["x^2+2","x^2+5x+7","x^2+4x+6"], ['x^2+7x+9','x^2+3x+5','x^2-x+1'] , ['x^2+2x+4','x^2+x+3','x^2+6x+8']]
+    # output = is_magic_square(matrix)
+    # print("The output is: ",output)
+    # matrix = [["y^2x+xy-1+xz-xz","yx+1-2+xy^2"],["xy+y^2x-1" ,'yx-1+z^2+xy^2-z^2']]
+    # output = is_magic_square(matrix)
+    # print("The output is: ",output)
+    # matrix = [["-x^2y^2+2xy+1" ,"-x^2y^2+7yx-5yx+1"],["2x^2y^2-3x^2y^2+2xy+1","2xy-y^2x^2+1"]]
+    # output = is_magic_square(matrix)
+    # print("The output is: ",output)
+    # matrix = [['-x^2y^2 + 2xy + 1','-x^2y^2 + 7yx - 5yx + 1'],['2x^2y^2 - 3x^2y^2 + 2xy + 1', '2xy - y^2x^2 + 1']]
+    # output = is_magic_square(matrix)
+    # print("The output is: ",output)
+    # matrix = [['1+1', '1+1'], ['1+1', '1+1']]
+    # output = is_magic_square(matrix)
+    # print("The output is: ",output)
+    matrix = parse_text()
+    print(is_magic_square(matrix))
+
+
+
+
+
 
     return 0
 
