@@ -273,9 +273,9 @@ def parse_text():
                 lst = [value.lstrip() for value in lst]
                 matrix.append(lst)
             else:
-                print(is_magic_square(matrix))
+                print("The output is:",is_magic_square(matrix))
                 matrix = []
-        print(is_magic_square(matrix))
+        print("The output is:",is_magic_square(matrix))
 
 ########################################### ALL THE FUNCTIONS FOR EXPRESSIONS END HERE ####################################################
 
