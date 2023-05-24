@@ -216,7 +216,7 @@ def row_operations(term):
     dict1 = create_dictionary(result)
     return dict1
 
-# The function performs operations for a row. Here the variable row can be a single row, column, left diagonal, right diagonal
+# This function performs operations for a row. Here the variable row can be a single row, column, left diagonal, right diagonal
 def calculate_row(row):
     resultant_dict = defaultdict(int)
     for i in range(len(row)-1):

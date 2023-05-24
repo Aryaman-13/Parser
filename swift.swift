@@ -1,14 +1,11 @@
-//
-//  main.swift
-//  parser_popl
-//
-//  Created by Aryaman Khandelwal on 22/05/23.
-//
+// Author ---> Aryaman Khandelwal
+// UID -----> U20210018
 
+// Importing all the packages
 import Foundation
 
-// Adds '1' in the beginning if the coefficient is missing for that term
-func addDigStart(_ word: String) -> String { // Checked ---> Works fine
+// This function adds '1' in the beginning if the coefficient is missing for that term 
+func addDigStart(_ word: String) -> String {
     var modifiedWord: String // Declaring the variable
     if word.prefix(1) == "-" {
         if let secondChar = word.dropFirst().first, secondChar.isNumber {
@@ -29,8 +26,7 @@ func addDigStart(_ word: String) -> String { // Checked ---> Works fine
 
 
 // This function parses the string until it gets the alphabet | Output ---> length of the substring and substring
-
-func parseStringUntilAlphabet(_ string: String) -> (Int, String) { // Checked ---> Works fine
+func parseStringUntilAlphabet(_ string: String) -> (Int, String) {
     for (index, character) in string.enumerated() {
         if character.isLetter {
             let substring = String(string.prefix(index))
@@ -40,9 +36,9 @@ func parseStringUntilAlphabet(_ string: String) -> (Int, String) { // Checked --
     
     return (string.count, string)
 }
-// This function stores the sign of each term. This is calld while assigning the sign to the coefficients
 
-func assignSign(_ word: String) -> [Character] { // Checked ---> Works fine
+// This function stores the sign of each term. This is called while assigning the sign to the coefficients
+func assignSign(_ word: String) -> [Character] {
     var signList: [Character] = []
     var currentSign: Character = "+"
     
@@ -64,8 +60,8 @@ func assignSign(_ word: String) -> [Character] { // Checked ---> Works fine
     return signList
 }
 
-
-func simplifyExpression(charList: [String]) -> [String] { // Checked ---> Works fine
+// This function is used to simplify the terms containing variables | Concatenates the variable with its power
+func simplifyExpression(charList: [String]) -> [String] {
     var simplifiedList = [String]()
     
     for i in 0..<charList.count {
@@ -80,7 +76,8 @@ func simplifyExpression(charList: [String]) -> [String] { // Checked ---> Works 
     return simplifiedList
 }
 
-func splitExpression(word: String) -> [String] { // Checked ---> Works fine
+// This function splits the each term
+func splitExpression(word: String) -> [String] {
     var modifiedWord = word
     
     if !modifiedWord.first!.isNumber {
@@ -121,6 +118,8 @@ func splitExpression(word: String) -> [String] { // Checked ---> Works fine
     return output
 }
 
+//This function is used to create dictionary of the resultant expression. Keys are all the unique terms that appear in the expression, and the value 
+// of the keys are the coefficients of the terms
 func convertString(_ string: String) -> String { // Checked ---> Works fine
     var result = ""
     var i = string.startIndex
@@ -146,6 +145,8 @@ func convertString(_ string: String) -> String { // Checked ---> Works fine
     return result
 }
 
+// This function updates the keys of the dictionary. Like it converts the key 'x2y3' to 'xxyyy' and so on. For the case, 
+// where the key is 'xy' remains'xy' only. This function is called by create_dictionary function
 func updateDict(_ dict1: [String: Any]) -> [String: Any] { // Checked ----> Works fine
     var newDict = [String: Any]()
     
@@ -171,6 +172,8 @@ func updateDict(_ dict1: [String: Any]) -> [String: Any] { // Checked ----> Work
     return newDict
 }
 
+// This function is used to create dictionary of the resultant expression. Keys are all the unique terms that appear in the expression, and the value 
+// of the keys are the coefficients of the terms
 func createDictionary(_ lst: [[String]]) -> [String: Int] { // Checked ---> WORKS FINE
     var dict1 = [String: Any]()
     
@@ -231,6 +234,7 @@ func createDictionary(_ lst: [[String]]) -> [String: Int] { // Checked ---> WORK
     return dicOut
 }
 
+// This function takes sum of two expressions
 func performOperations(_ dict1: [String: Int], _ dict2: [String: Int]) -> [String: Int] { // Checked ---> works fine
     var masterDict = [String: Int]()
     
@@ -268,6 +272,7 @@ func performOperations(_ dict1: [String: Int], _ dict2: [String: Int]) -> [Strin
     return masterDict
 }
 
+// This function is used to call all the functions that are defined above
 func callFunction(text: String) -> [[String]] {
     let signList = assignSign(text)
     return text.split(whereSeparator: { "+-".contains($0) })
@@ -277,13 +282,29 @@ func callFunction(text: String) -> [[String]] {
 
 }
 
+// This function is used to call call_function and create_dictionary for a term
 func rowOperations(text: String) -> [String: Int] {
     let result = callFunction(text:text)
     let dict1 = createDictionary(result)
     return dict1
 }
+// This function performs operations for a row. Here the variable row can be a single row, column, left diagonal, right diagonal
+func calculateRow(row: [String]) -> [String: Int] {
+    var resultantDict = [String: Int]()
+    for i in 0..<row.count-1 {
+        if i == 0 {
+            let dict1 = rowOperations(text: row[i])
+            let dict2 = rowOperations(text: row[i+1])
+            resultantDict = performOperations(dict1, dict2)
+        } else {
+            let dict1 = rowOperations(text: row[i+1])
+            resultantDict = performOperations(resultantDict, dict1)
+        }
+    }
+    return resultantDict
+}
 
-
+// This function is used to check whether the matrix is a magic square matrix or not
 func isMagicSquare(matrix: [[String]]) -> Bool {
     var masterDict = [String: Int]()
     
@@ -300,7 +321,6 @@ func isMagicSquare(matrix: [[String]]) -> Bool {
             }
         }
     }
-    
     // Checks for all the columns
     let numCols = matrix[0].count
     for colIdx in 0..<numCols {
@@ -313,7 +333,6 @@ func isMagicSquare(matrix: [[String]]) -> Bool {
             return false
         }
     }
-    
     // Checks for the left diagonal
     var leftDiag = [String]()
     for i in 0..<matrix.count {
@@ -338,20 +357,35 @@ func isMagicSquare(matrix: [[String]]) -> Bool {
     return true
 }
 
-func calculateRow(row: [String]) -> [String: Int] {
-    var resultantDict = [String: Int]()
-    for i in 0..<row.count-1 {
-        if i == 0 {
-            let dict1 = rowOperations(text: row[i])
-            let dict2 = rowOperations(text: row[i+1])
-            resultantDict = performOperations(dict1, dict2)
-        } else {
-            let dict1 = rowOperations(text: row[i+1])
-            resultantDict = performOperations(resultantDict, dict1)
+// This function is used to parse text from the matrix.txt file, and generates the matrix that needs to be check whether they are magic square
+// or not.
+func parseText() {
+    let fileURL = URL(fileURLWithPath: "./matrix.txt")
+    var matrix: [[String]] = []
+    if let fileContent = try? String(contentsOf: fileURL, encoding: .utf8) {
+        let lines = fileContent.components(separatedBy: "\n")
+        for line in lines {
+            if !line.isEmpty { // Not an empty line
+                let values = line.components(separatedBy: " ").map { $0.trimmingCharacters(in: .whitespaces) }
+                matrix.append(values)
+            } else {
+                if !matrix.isEmpty {
+                    print("The output is:",isMagicSquare(matrix: matrix))
+                    matrix = []
+                }
+            }
+        }
+        if !matrix.isEmpty {
+            print(isMagicSquare(matrix: matrix))
         }
     }
-    return resultantDict
 }
+
+parseText()
+
+/////////////////////////////////////////// ALL THE FUNCTIONS FOR EXPRESSIONS END HERE ////////////////////////////////////////////////////
+
+/////////////////////////////////////////// SOME OF THE TEST CASES THAT I HAVE USED ///////////////////////////////////////////////////////////
 
 // var matrix = [["8", "1", "6"],["3", "5", "7"],["4", "9", "2"]]
 // print("The output is: ",isMagicSquare(matrix:matrix))
@@ -377,42 +411,4 @@ func calculateRow(row: [String]) -> [String: Int] {
 // print("The output is: ",output)
 
 
-// func parseText() -> [[String]] {
-//     let fileURL = URL(fileURLWithPath: "./matrix.txt")
-    
-//     var matrix: [[String]] = []
-//     if let fileContent = try? String(contentsOf: fileURL, encoding: .utf8) {
-//         let lines = fileContent.components(separatedBy: "\n")
-//         for line in lines {
-//             let values = line.components(separatedBy: ",").map { $0.trimmingCharacters(in: .whitespaces) }
-//             matrix.append(values)
-//         }
-//     }
-    
-//     return matrix
-// }
-
-func parseText() {
-    let fileURL = URL(fileURLWithPath: "./matrix.txt")
-    var matrix: [[String]] = []
-    if let fileContent = try? String(contentsOf: fileURL, encoding: .utf8) {
-        let lines = fileContent.components(separatedBy: "\n")
-        for line in lines {
-            if !line.isEmpty { // Not an empty line
-                let values = line.components(separatedBy: " ").map { $0.trimmingCharacters(in: .whitespaces) }
-                matrix.append(values)
-            } else {
-                if !matrix.isEmpty {
-                    print("The output is:",isMagicSquare(matrix: matrix))
-                    matrix = []
-                }
-            }
-        }
-        if !matrix.isEmpty {
-            print(isMagicSquare(matrix: matrix))
-        }
-    }
-}
-
-parseText()
 
