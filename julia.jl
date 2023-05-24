@@ -329,11 +329,11 @@ function parse_text()
                 lst = [lstrip(value) for value in lst]
                 push!(matrix, lst)
             else
-                println(is_magic_square(matrix))
+                println("The output is:"is_magic_square(matrix))
                 matrix = []
             end
         end
-        println(is_magic_square(matrix))
+        println("The output is:"is_magic_square(matrix))
     end
 end
 
