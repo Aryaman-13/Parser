@@ -1,9 +1,13 @@
-# In this code we will be implementing the magic matrix problem in python
+# Author ---> Aryaman Khandelwal
+# UID -----> U20210018
+
+# Importing the packages
 import re
 from collections import defaultdict
-# Adds '1' in the beginning if the coefficient is missing for that term 
-def add_dig_start(word):
 
+
+# The function adds '1' in the beginning if the coefficient is missing for that term 
+def add_dig_start(word):
     if(word[0] == '-'):
         if(word[1].isdigit() == True):
             return word # It already has a coefficient
@@ -16,12 +20,14 @@ def add_dig_start(word):
         else:
             word = "1" + word # Adding "1" as the leading coefficient
             return word 
+        
 # This function parses the string until it gets the alphabet | Output ---> length of the substring and substring
 def parse_string_until_alphabet(string):
     for i in range(len(string)):
         if string[i].isalpha():
             return i, string[:i]
     return len(string), string
+
 # This function stores the sign of each term. This is calld while assigning the sign to the coefficients
 def assign_sign(word):
     sign_list = []
@@ -30,12 +36,12 @@ def assign_sign(word):
         current_sign = '-'
     if word[0].isdigit() == True or word[0].isalpha():
         sign_list.append(current_sign)
-        
     for char in word:
         if char in ['+','-']:
             current_sign = char
             sign_list.append(current_sign)
     return sign_list
+
 # This function is used to simplify the terms containing variables | Concatenates the variable with its power
 def simplify_expression(char_list):
     j = 0 
@@ -52,6 +58,7 @@ def simplify_expression(char_list):
        else:
            j+=1
     return total_list
+
 # This function splits the each term
 def split_expression(word):
     if word[0].isdigit() == False:
@@ -100,6 +107,9 @@ def convert_string(string):
             num = num - 1
             result += string[num_start - 1] * num
     return result
+
+# This function updates the keys of the dictionary. Like it converts the key 'x2y3' to 'xxyyy' and so on. For the case, 
+# where the key is 'xy' remains'xy' only. This function is called by create_dictionary function
 def update_dict(dict1):
     new_dict = {}
     for index in dict1:
@@ -148,7 +158,7 @@ def create_dictionary(lst):
             dic_out[x] = y
     return dic_out
 
-# Takes sum of two expressions
+# This function takes sum of two expressions
 def perform_operations(dict1,dict2):
     master_dict = {}
     # Iterate over dict1 and check if the keys exist in dict2
@@ -177,7 +187,8 @@ def perform_operations(dict1,dict2):
         if key not in master_dict:
             master_dict[key] = val
     return master_dict
-# Calls all the functions that are defined above
+
+# This function is used to call all the functions that are defined above
 def call_function(text):
     sign_list = assign_sign(text)
     # Splits the string whenever it encounters a (+) or (-) sign, without including the sign in the split
@@ -194,18 +205,19 @@ def call_function(text):
             result[i] = split_expression(result[i])
         else:
             result[i] = [result[i]]
-
     # Adding the respective signs to each term
     for i in range(len(result)):
         expression = result[i]
         expression[0] = sign_list[i] + expression[0]
     return result
+
+# This function is used to call call_function and create_dictionary for a term
 def row_operations(term):
     result = call_function(term)
     dict1 = create_dictionary(result)
     return dict1
-# Performs operations for a row. Here the variable row can be a single row, column, left diagonal, right diagonal
 
+# The function performs operations for a row. Here the variable row can be a single row, column, left diagonal, right diagonal
 def calculate_row(row):
     resultant_dict = defaultdict(int)
     for i in range(len(row)-1):
@@ -217,6 +229,8 @@ def calculate_row(row):
             dict1 = row_operations(row[i+1])
             resultant_dict = perform_operations(resultant_dict,dict1)
     return resultant_dict
+
+# This function is used to check whether the matrix is a magic square matrix or not
 def is_magic_square(matrix):
     # Checks for all the rows
     master_dict = defaultdict(int)
@@ -249,17 +263,8 @@ def is_magic_square(matrix):
                 return False
     return True
 
-# def parse_text():
-#     with open("./matrix.txt",'r') as file:
-#         matrix = []
-
-#         for line in file:
-#             lst = line.rstrip().split(' ')
-#             lst = [value.lstrip() for value in lst]
-#             matrix.append(lst)
-#     return matrix
-
-
+# This function is used to parse text from the matrix.txt file, and generates the matrix that needs to be check whether they are magic square
+# or not.
 def parse_text():
     with open("./matrix.txt","r") as file:
         matrix = []
@@ -272,9 +277,6 @@ def parse_text():
                 print(is_magic_square(matrix))
                 matrix = []
         print(is_magic_square(matrix))
-
-                
-
 
 ########################################### ALL THE FUNCTIONS FOR EXPRESSIONS END HERE ####################################################
 
@@ -297,6 +299,13 @@ def main():
     print(" Represent 7*x^2 as 7x^2")
     print()
     print()
+    matrix = parse_text()
+    return 0
+
+if __name__== "__main__" :
+    main()
+
+########################################### SOME OF THE TEST CASES THAT I HAVE USED ###########################################################
 
     # print(is_magic_square(matrix))
     # matrix = [["8", "1", "6"],["3", "5", "7"],["4", "9", "2"]]
@@ -321,8 +330,3 @@ def main():
     # matrix = [['1+1', '1+1'], ['1+1', '1+1']]
     # output = is_magic_square(matrix)
     # print("The output is: ",output)
-    matrix = parse_text()
-    return 0
-
-if __name__== "__main__" :
-    main()

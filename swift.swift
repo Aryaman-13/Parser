@@ -268,9 +268,6 @@ func performOperations(_ dict1: [String: Int], _ dict2: [String: Int]) -> [Strin
     return masterDict
 }
 
-
-import Foundation
-
 func callFunction(text: String) -> [[String]] {
     let signList = assignSign(text)
     return text.split(whereSeparator: { "+-".contains($0) })
