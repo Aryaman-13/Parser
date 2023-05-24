@@ -320,9 +320,9 @@ end
 # matrix = [ ["1", "2", "3"],["4", "5", "6"],["7", "8", "9"]]
 # output = is_magic_square(matrix)
 # println("The output is: ",output)
-matrix = [["x^2+2","x^2+5x+7","x^2+4x+6"], ["x^2+7x+9","x^2+3x+5","x^2-x+1"] , ["x^2+2x+4","x^2+x+3","x^2+6x+8"]]
-output = is_magic_square(matrix)
-println("The output is: ",output)
+# matrix = [["x^2+2","x^2+5x+7","x^2+4x+6"], ["x^2+7x+9","x^2+3x+5","x^2-x+1"] , ["x^2+2x+4","x^2+x+3","x^2+6x+8"]]
+# output = is_magic_square(matrix)
+# println("The output is: ",output)
 # matrix = [["y^2x+xy-1+xz-xz","yx+1-2+xy^2"],["xy+y^2x-1" ,"yx-1+z^2+xy^2-z^2"]]
 # output = is_magic_square(matrix)
 # println("The output is: ",output)

@@ -249,14 +249,33 @@ def is_magic_square(matrix):
                 return False
     return True
 
+# def parse_text():
+#     with open("./matrix.txt",'r') as file:
+#         matrix = []
+
+#         for line in file:
+#             lst = line.rstrip().split(' ')
+#             lst = [value.lstrip() for value in lst]
+#             matrix.append(lst)
+#     return matrix
+
+
 def parse_text():
-    with open("./matrix.txt",'r') as file:
+    with open("./matrix.txt","r") as file:
         matrix = []
         for line in file:
-            lst = line.rstrip().split(',')
-            lst = [value.lstrip() for value in lst]
-            matrix.append(lst)
-    return matrix
+            if line.strip(): # Not an empty line
+                lst = line.rstrip().split(' ')
+                lst = [value.lstrip() for value in lst]
+                matrix.append(lst)
+            else:
+                print(is_magic_square(matrix))
+                matrix = []
+        print(is_magic_square(matrix))
+
+                
+
+
 ########################################### ALL THE FUNCTIONS FOR EXPRESSIONS END HERE ####################################################
 
 def main():
@@ -303,7 +322,8 @@ def main():
     # output = is_magic_square(matrix)
     # print("The output is: ",output)
     matrix = parse_text()
-    print(is_magic_square(matrix))
+    # print(matrix)
+    # print(is_magic_square(matrix))
 
 
 
