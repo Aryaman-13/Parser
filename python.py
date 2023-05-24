@@ -5,8 +5,7 @@
 import re
 from collections import defaultdict
 
-
-# The function adds '1' in the beginning if the coefficient is missing for that term 
+# This function adds '1' in the beginning if the coefficient is missing for that term 
 def add_dig_start(word):
     if(word[0] == '-'):
         if(word[1].isdigit() == True):
