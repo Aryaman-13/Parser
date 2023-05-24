@@ -1,18 +1,10 @@
-# Author of the File is: Aryaman Khandelwal
-# Unique Id: U20210018
+# Author ---> Aryaman Khandelwal
+# UID -----> U20210018
 
-#= This file contains the code of magic square matrix, where the inputs can be:
-1. Numbers
-2. Regular Expressions
-3. Polynomials
-=#
-
-# Defining the functions
-
+# Importing the functions
 using Unicode
 
-# Adds '1' in the beginning if the coefficient is missing for that term
-
+# This function adds '1' in the beginning if the coefficient is missing for that term 
 function add_dig_start(word)
     if word[1] == '-'
         if isdigit(word[2])
@@ -32,7 +24,6 @@ function add_dig_start(word)
 end
 
 # This function stores the sign of each term. This is calld while assigning the sign to the coefficients
-
 function assign_sign(word)
     sign_list = Char[]
     current_sign = '+'
@@ -51,6 +42,7 @@ function assign_sign(word)
     return sign_list
 end
 
+# This function parses the string until it gets the alphabet | Output ---> length of the substring and substring
 function parse_string_until_alphabet(string)
     for i in eachindex(string)
         if (isascii(string[i]) && isletter(string[i]))
@@ -60,6 +52,7 @@ function parse_string_until_alphabet(string)
     return length(string), string
 end
 
+# This function is used to simplify the terms containing variables | Concatenates the variable with its power
 function simplify_expression(char_list)
     total_list = String[]
     for i in 1:length(char_list)
@@ -75,6 +68,7 @@ function simplify_expression(char_list)
     return total_list
 end
 
+# This function splits the each term
 function split_expression(word)
     if !isdigit(word[1])
         word = "1" * word
@@ -110,6 +104,8 @@ function split_expression(word)
     return output
 end
 
+# This function is used to create dictionary of the resultant expression. Keys are all the unique terms that appear in the expression, and the value 
+#  of the keys are the coefficients of the terms
 function convert_string(string)
     result = ""
     i = 1
@@ -130,6 +126,8 @@ function convert_string(string)
     return result
 end
 
+# This function updates the keys of the dictionary. Like it converts the key 'x2y3' to 'xxyyy' and so on. For the case, 
+# where the key is 'xy' remains'xy' only. This function is called by create_dictionary function
 function update_dict(dict1)
     for (key, value) in pairs(dict1)
         if typeof(value) <: Integer 
@@ -158,6 +156,8 @@ function update_dict(dict1)
     return new_dict
 end
 
+# This function is used to create dictionary of the resultant expression. Keys are all the unique terms that appear in the expression, and the value 
+#  of the keys are the coefficients of the terms
 function create_dictionary(lst)
     dict1 = Dict{String, Any}()
     for elem in lst
@@ -199,36 +199,7 @@ function create_dictionary(lst)
     return dic_out
 end
 
-function call_function(text)
-    sign_list = assign_sign(text)
-    terms = split(text, r"(?<=[+-])|([+-])")  # Split the string based on '+' or '-' operators
-    result = []
-    for term in terms
-        term = strip(term)
-        if !isempty(term)
-            output = add_dig_start(term)
-            if any(c -> isletter(c), output)
-                output = split_expression(output)
-            else
-                output = [output]
-            end
-            push!(result, output)
-        end
-    end
-    for i in 1:length(result)
-        expression = result[i]
-        expression[1] = string(sign_list[i], expression[1])
-    end
-    result = [string.(result[i]) for i in 1:length(result)]  # Convert each element to String
-    return result
-end
-
-function row_operations(term)
-    result = call_function(term)
-    dict1 = create_dictionary(result)
-    return dict1
-end
-
+# This function takes sum of two expressions
 function perform_operations(dict1, dict2)
     master_dict = Dict{Any, Any}()
     # Iterate over dict1 and check if the keys exist in dict2
@@ -254,6 +225,39 @@ function perform_operations(dict1, dict2)
     return master_dict
 end
 
+# This function is used to call all the functions that are defined above
+function call_function(text)
+    sign_list = assign_sign(text)
+    terms = split(text, r"(?<=[+-])|([+-])")  # Split the string based on '+' or '-' operators
+    result = []
+    for term in terms
+        term = strip(term)
+        if !isempty(term)
+            output = add_dig_start(term)
+            if any(c -> isletter(c), output)
+                output = split_expression(output)
+            else
+                output = [output]
+            end
+            push!(result, output)
+        end
+    end
+    for i in 1:length(result)
+        expression = result[i]
+        expression[1] = string(sign_list[i], expression[1])
+    end
+    result = [string.(result[i]) for i in 1:length(result)]  # Convert each element to String
+    return result
+end
+
+# This function is used to call call_function and create_dictionary for a term
+function row_operations(term)
+    result = call_function(term)
+    dict1 = create_dictionary(result)
+    return dict1
+end
+
+# This function performs operations for a row. Here the variable row can be a single row, column, left diagonal, right diagonal
 function calculate_row(row)
     resultant_dict = Dict{String, Any}()
     for i in 1:length(row)-1
@@ -270,6 +274,7 @@ function calculate_row(row)
     return resultant_dict
 end
 
+#  This function is used to check whether the matrix is a magic square matrix or not
 function is_magic_square(matrix)
     master_dict = Dict{String,Any}()
 
@@ -313,6 +318,31 @@ function is_magic_square(matrix)
     return true
 end
 
+# This function is used to parse text from the matrix.txt file, and generates the matrix that needs to be check whether they are magic square
+# or not.
+function parse_text()
+    matrix = []
+    open("./matrix.txt") do file
+        for line in eachline(file)
+            if strip(line) != ""  # Not an empty line
+                lst = split(strip(line))
+                lst = [lstrip(value) for value in lst]
+                push!(matrix, lst)
+            else
+                println(is_magic_square(matrix))
+                matrix = []
+            end
+        end
+        println(is_magic_square(matrix))
+    end
+end
+
+parse_text()
+
+########################################### ALL THE FUNCTIONS FOR EXPRESSIONS END HERE ####################################################
+
+########################################### SOME OF THE TEST CASES THAT I HAVE USED ###########################################################
+
 # matrix = [["8", "1", "6"],["3", "5", "7"],["4", "9", "2"]]
 # println("The output is: ",is_magic_square(matrix))
 # matrix = [ ["16", "2", "3", "13"],["5", "11", "10", "8"],["9", "7", "6", "12"],["4", "14", "15", "1"] ]
@@ -335,40 +365,6 @@ end
 # matrix = [["1+1", "1+1"],["1+1", "1+1"]]
 # output = is_magic_square(matrix)
 # println("The output is: ",output)
-
-# function parse_text()
-#     matrix = []
-#     open("./matrix.txt") do file
-#         for line in eachline(file)
-#             lst = split(strip(line), ",")
-#             lst = strip.(lst)
-#             push!(matrix, lst)
-#         end
-#     end
-#     return matrix
-# end
-
-
-function parse_text()
-    matrix = []
-    open("./matrix.txt") do file
-        for line in eachline(file)
-            if strip(line) != ""  # Not an empty line
-                lst = split(strip(line))
-                lst = [lstrip(value) for value in lst]
-                push!(matrix, lst)
-            else
-                println(is_magic_square(matrix))
-                matrix = []
-            end
-        end
-        println(is_magic_square(matrix))
-    end
-end
-
-parse_text()
-# println(is_magic_square(matrix))
-
 
 
 
