@@ -380,23 +380,42 @@ func calculateRow(row: [String]) -> [String: Int] {
 // print("The output is: ",output)
 
 
-func parseText() -> [[String]] {
-    let fileURL = URL(fileURLWithPath: "./matrix.txt")
+// func parseText() -> [[String]] {
+//     let fileURL = URL(fileURLWithPath: "./matrix.txt")
     
+//     var matrix: [[String]] = []
+//     if let fileContent = try? String(contentsOf: fileURL, encoding: .utf8) {
+//         let lines = fileContent.components(separatedBy: "\n")
+//         for line in lines {
+//             let values = line.components(separatedBy: ",").map { $0.trimmingCharacters(in: .whitespaces) }
+//             matrix.append(values)
+//         }
+//     }
+    
+//     return matrix
+// }
+
+func parseText() {
+    let fileURL = URL(fileURLWithPath: "./matrix.txt")
     var matrix: [[String]] = []
     if let fileContent = try? String(contentsOf: fileURL, encoding: .utf8) {
         let lines = fileContent.components(separatedBy: "\n")
         for line in lines {
-            let values = line.components(separatedBy: ",").map { $0.trimmingCharacters(in: .whitespaces) }
-            matrix.append(values)
+            if !line.isEmpty { // Not an empty line
+                let values = line.components(separatedBy: " ").map { $0.trimmingCharacters(in: .whitespaces) }
+                matrix.append(values)
+            } else {
+                if !matrix.isEmpty {
+                    print("The output is:",isMagicSquare(matrix: matrix))
+                    matrix = []
+                }
+            }
+        }
+        if !matrix.isEmpty {
+            print(isMagicSquare(matrix: matrix))
         }
     }
-    
-    return matrix
 }
 
-var matrix = parseText()
-var output = isMagicSquare(matrix:matrix)
-print(output)
-
+parseText()
 

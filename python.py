@@ -322,14 +322,6 @@ def main():
     # output = is_magic_square(matrix)
     # print("The output is: ",output)
     matrix = parse_text()
-    # print(matrix)
-    # print(is_magic_square(matrix))
-
-
-
-
-
-
     return 0
 
 if __name__== "__main__" :

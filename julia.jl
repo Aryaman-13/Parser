@@ -336,20 +336,38 @@ end
 # output = is_magic_square(matrix)
 # println("The output is: ",output)
 
+# function parse_text()
+#     matrix = []
+#     open("./matrix.txt") do file
+#         for line in eachline(file)
+#             lst = split(strip(line), ",")
+#             lst = strip.(lst)
+#             push!(matrix, lst)
+#         end
+#     end
+#     return matrix
+# end
+
+
 function parse_text()
     matrix = []
     open("./matrix.txt") do file
         for line in eachline(file)
-            lst = split(strip(line), ",")
-            lst = strip.(lst)
-            push!(matrix, lst)
+            if strip(line) != ""  # Not an empty line
+                lst = split(strip(line))
+                lst = [lstrip(value) for value in lst]
+                push!(matrix, lst)
+            else
+                println(is_magic_square(matrix))
+                matrix = []
+            end
         end
+        println(is_magic_square(matrix))
     end
-    return matrix
 end
 
-matrix = parse_text()
-println(is_magic_square(matrix))
+parse_text()
+# println(is_magic_square(matrix))
 
 
 
